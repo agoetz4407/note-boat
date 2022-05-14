@@ -1,12 +1,9 @@
 const router = require('express').Router();
 const fs = require('fs');
-let notes;
+const notes = require('../../db/db.json')
 
-router.get('/notes', (req, res) => {
-    fs.readFile('./db/db.json', 'utf8', function (err, data) {
-        notes = JSON.parse(data);
-    });
-    res.json(notes.savedNotes)
+router.get('/notes', (req, res) => { 
+    res.json(notes)
 })
 
 module.exports = router;
