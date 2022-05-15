@@ -1,5 +1,7 @@
 # Note-Boat
 
+![Screenshot](./screenshot.png)
+
 ## Description
 Note-Boat is a webapp that lets the user write, save, and delete notes that are stored in a .json file so they persist on the server for the app.
 
