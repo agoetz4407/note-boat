@@ -1,21 +1,22 @@
 const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
-const uniqid = require('uniqid'); 
-// const notes = require('../../db/db.json')
-let notes;
+let notes = require('../../db/db.json');
+
 
 router.get('/notes', (req, res) => { 
-    fs.readFile('../../db/db.json', 'utf-8', (err, data) => {
-        notes = data;
-    })
-    res.json(notes)
+    res.json(notes);
 })
 
 router.post('/notes', (req, res) => {
     const notesArr = notes;
+    if (notesArr.length) {
+        var newId = notesArr[notesArr.length - 1].id + 1;
+    } else {
+        var newId = 1
+    }
     const newNote = req.body;
-    newNote.id = uniqid();
+    newNote.id = newId;
     notesArr.push(newNote)
     fs.writeFileSync(
         path.join(__dirname, '../../db/db.json'),
@@ -28,14 +29,12 @@ router.post('/notes', (req, res) => {
 })
 
 router.delete('/notes/:id', (req, res) => {
-    const notesArr = notes;
-    const noteId = req.params.id;
-    const newNotesArr = notesArr.filter(note => {
-        if (note.id != noteId) {
+    const newNotesArr = notes.filter(note => {
+        if (note.id != req.params.id) {
             return note
         }
     });
-
+    notes = newNotesArr
     fs.writeFileSync(
         path.join(__dirname, '../../db/db.json'),
         JSON.stringify(newNotesArr)
